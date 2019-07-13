@@ -1,9 +1,14 @@
 package com.timeline.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.timeline.api.security.filter.FilterSkipMatcher;
 import com.timeline.api.security.filter.FormLoginFilter;
+import com.timeline.api.security.filter.JwtAuthenticationFilter;
 import com.timeline.api.security.handlers.FormLoginAuthenticationSuccessHandler;
+import com.timeline.api.security.handlers.JwtAuthenticationFailureHandler;
+import com.timeline.api.security.jwt.HeaderTokenExtractor;
 import com.timeline.api.security.provider.FormLoginAuthenticationProvider;
+import com.timeline.api.security.provider.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private FormLoginAuthenticationProvider formLoginAuthenticationProvider;
 
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
+
+    @Autowired
+    private JwtAuthenticationFailureHandler jwtAuthenticationFailureHandler;
+
+    @Autowired
+    private HeaderTokenExtractor headerTokenExtractor;
+
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -45,9 +59,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return filter;
     }
 
+    protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        FilterSkipMatcher filterSkipMatcher = new FilterSkipMatcher(Arrays.asList("formlogin"), "/api/**");
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(filterSkipMatcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+        return filter;
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(this.formLoginAuthenticationProvider);
+        auth.authenticationProvider(this.jwtAuthenticationProvider);
     }
 
     @Override
@@ -58,6 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable();
         http
-            .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
