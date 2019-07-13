@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:timeline;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL
+    username: sa
+    initialize-mode: always
+  profiles:
+    active: local
+  h2:
+    console:
+      enabled: true
