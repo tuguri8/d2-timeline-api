@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class JwtFactory {
 
     private static final Logger log = LoggerFactory.getLogger(JwtFactory.class);
+    // TODO key값 암호화
     private static String signingKey = "jwttest";
 
     public String generateToken(AccountContext context) {
