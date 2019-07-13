@@ -1,7 +1,13 @@
 package com.timeline.api;
 
+import com.timeline.api.domain.Account;
+import com.timeline.api.domain.AccountRepository;
+import com.timeline.api.domain.UserRole;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class ApiApplication {
@@ -10,4 +16,15 @@ public class ApiApplication {
         SpringApplication.run(ApiApplication.class, args);
     }
 
+    @Bean
+    CommandLineRunner bootstrapTestAccount(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+            Account account = new Account();
+            account.setUserId("tuguri8");
+            account.setPassword(passwordEncoder.encode("ahfk12"));
+            account.setUserRole(UserRole.USER);
+            account.setUserName("한승우");
+            accountRepository.save(account);
+        };
+    }
 }
