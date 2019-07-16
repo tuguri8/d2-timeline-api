@@ -1,5 +1,6 @@
 package com.timeline.api.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,10 +15,14 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "USER_ID", unique = true)
     private String userId;
+    @Column(name = "USER_NAME")
     private String userName;
+    @Column(name = "PASSWORD")
     private String password;
 
+    @Column(name = "USER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
 

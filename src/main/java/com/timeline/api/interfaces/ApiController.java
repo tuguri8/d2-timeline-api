@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ApiController {
 
-    @GetMapping("/hello")
     @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/hello")
     public String getUserName(Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
         return token.getAccountContext().getUsername();

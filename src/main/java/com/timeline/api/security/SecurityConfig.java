@@ -43,10 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private HeaderTokenExtractor headerTokenExtractor;
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder getPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     public ObjectMapper getObjectMapper() {
@@ -54,13 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected FormLoginFilter formLoginFilter() throws Exception {
-        FormLoginFilter filter = new FormLoginFilter("/formlogin", formLoginAuthenticationSuccessHandler,  null);
+        FormLoginFilter filter = new FormLoginFilter("/login", formLoginAuthenticationSuccessHandler,  null);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
     }
 
     protected JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        FilterSkipMatcher filterSkipMatcher = new FilterSkipMatcher(Arrays.asList("formlogin"), "/api/**");
+        FilterSkipMatcher filterSkipMatcher = new FilterSkipMatcher(Arrays.asList("login", "/user/signup", "/h2-console/**"), "/api/**");
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(filterSkipMatcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         filter.setAuthenticationManager(super.authenticationManagerBean());
         return filter;
@@ -79,6 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
             .csrf().disable();
+        http
+            .headers().frameOptions().disable();
         http
             .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
