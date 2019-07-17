@@ -1,7 +1,9 @@
 package com.timeline.api.Post.service;
 
-import com.timeline.api.Post.domain.Post;
 import com.timeline.api.Post.domain.PostsRepository;
+import com.timeline.api.Post.interfaces.dto.request.PostRequest;
+import com.timeline.api.Post.interfaces.dto.response.PostResponse;
+import com.timeline.api.Post.service.model.PostModel;
 
 import java.time.LocalDateTime;
 
@@ -14,11 +16,18 @@ public class postsServiceImpl implements PostsService {
     }
 
     //게시글 작성 후 DB 저장
-    public void savePost (Post post){
-    //사용자 인증 거쳤다고 가정 ( userId,userName 받아왔다고 가정)
-        // content,imagePath는 @modelAttribute 통해 자동 바인딩
-        post.setPostDatetime(LocalDateTime.now());
+    public PostResponse savePost (PostRequest postRequest){
+        PostModel postModel=new PostModel();
+        PostResponse postResponse=new PostResponse();
 
-        postsRepository.save(post);
+        postModel.setContent(postRequest.getContent());
+        //postModel.setuser(); 유저정보 전송
+        postModel.setPostDatetime(LocalDateTime.now());
+        postsRepository.save(postModel);
+
+        postResponse.setContent(postModel.getContent());
+        postResponse.setPostId((postModel.getPostId()));
+
+        return postResponse;
     }
 }

@@ -1,8 +1,9 @@
 package com.timeline.api.Post.service;
 
-import com.timeline.api.Post.domain.Post;
+import com.timeline.api.Post.interfaces.dto.request.PostRequest;
+import com.timeline.api.Post.interfaces.dto.response.PostResponse;
 
 public interface PostsService {
-    public void savePost (Post post);
+    PostResponse savePost (PostRequest postRequest);
 }
 
