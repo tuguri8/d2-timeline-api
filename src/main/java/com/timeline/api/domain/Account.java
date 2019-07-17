@@ -32,6 +32,16 @@ public class Account extends BaseEntity implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
 
+    public Account() {
+    }
+
+    public Account(String userId, String userName, String password, UserRole userRole) {
+        this.userId = userId;
+        this.userName = userName;
+        this.password = password;
+        this.userRole = userRole;
+    }
+
     public Long getId() {
         return id;
     }
