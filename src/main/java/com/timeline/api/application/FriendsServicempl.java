@@ -1,5 +1,6 @@
 package com.timeline.api.application;
 
+import com.timeline.api.application.model.AcceptFriendsModel;
 import com.timeline.api.application.model.AddFriendsModel;
 import com.timeline.api.domain.Account;
 import com.timeline.api.domain.AccountRepository;
@@ -34,5 +35,22 @@ public class FriendsServicempl implements FriendsService{
         friends.setActive(false);
         friendsRepository.save(friends);
         return modelMapper.map(friends, AddFriendsModel.class);
+    }
+
+    @Override
+    public AcceptFriendsModel acceptFriends(String userAccountId, Long friendRequestId) {
+        Friends friends = friendsRepository.findById(friendRequestId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 친구 요청입니다."));
+        // 본인한테 온 친구 요청이 아닐 경우
+        if (!isSameUser(userAccountId, friends)) {
+            throw new RuntimeException("잘못된 접근입니다.");
+        }
+        friends.setActive(true);
+        friendsRepository.save(friends);
+        return modelMapper.map(friends, AcceptFriendsModel.class);
+    }
+
+    private Boolean isSameUser(String userAccountId, Friends friends) {
+        Account user = accountRepository.findByUserId(userAccountId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
+        return user.getId().equals(friends.getFriend().getId());
     }
 }

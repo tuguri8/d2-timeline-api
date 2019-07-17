@@ -49,4 +49,5 @@ public class FriendsServicemplTest {
         assertTrue(friendsRepository.findAll().size() > 0);
     }
 
+
 }

@@ -1,6 +1,6 @@
 package com.timeline.api.interfaces.dto.request;
 
-public class AddFriendsRequest {
+public class FriendsRequest {
     private Long id;
 
     public Long getId() {
