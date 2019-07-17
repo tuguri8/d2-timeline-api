@@ -21,14 +21,14 @@ public class Account extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "USER_ID", unique = true)
+    @Column(name = "USER_ID", unique = true, nullable = false)
     private String userId;
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "USER_ROLE")
+    @Column(name = "USER_ROLE", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
 
