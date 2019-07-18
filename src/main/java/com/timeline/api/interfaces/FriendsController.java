@@ -24,16 +24,19 @@ public class FriendsController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public AddFriendsResponse addFriends(@RequestBody FriendsRequest addFriendsRequest, Authentication authentication) {
-        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
-        return new AddFriendsResponse(friendsService.addFriends(token.getAccountContext().getUsername(), addFriendsRequest.getId()));
+        return new AddFriendsResponse(friendsService.addFriends(getUserNameFromAuthentication(authentication), addFriendsRequest.getId()));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PutMapping
     public AcceptFriendsResponse acceptFriends(@RequestBody FriendsRequest acceptFriendsRequest, Authentication authentication) {
-        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
-        return new AcceptFriendsResponse(friendsService.acceptFriends(token.getAccountContext().getUsername(),
+        return new AcceptFriendsResponse(friendsService.acceptFriends(getUserNameFromAuthentication(authentication),
                                                                       acceptFriendsRequest.getId()));
+    }
+
+    private String getUserNameFromAuthentication(Authentication authentication) {
+        PostAuthorizationToken token = (PostAuthorizationToken) authentication;
+        return token.getAccountContext().getUsername();
     }
 
 }
