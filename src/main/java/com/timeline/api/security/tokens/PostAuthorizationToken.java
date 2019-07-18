@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public class PostAuthorizationToken extends UsernamePasswordAuthenticationToken {
+public class  PostAuthorizationToken extends UsernamePasswordAuthenticationToken {
     private PostAuthorizationToken(Object principal,
                                    Object credentials,
                                    Collection<? extends GrantedAuthority> authorities) {
