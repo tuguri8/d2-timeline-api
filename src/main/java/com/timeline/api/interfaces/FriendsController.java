@@ -32,7 +32,8 @@ public class FriendsController {
     @PutMapping
     public AcceptFriendsResponse acceptFriends(@RequestBody FriendsRequest acceptFriendsRequest, Authentication authentication) {
         PostAuthorizationToken token = (PostAuthorizationToken) authentication;
-        return new AcceptFriendsResponse(friendsService.acceptFriends(token.getAccountContext().getUsername(), acceptFriendsRequest.getId()));
+        return new AcceptFriendsResponse(friendsService.acceptFriends(token.getAccountContext().getUsername(),
+                                                                      acceptFriendsRequest.getId()));
     }
 
 }

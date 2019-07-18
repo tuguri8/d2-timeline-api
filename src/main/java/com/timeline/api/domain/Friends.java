@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name ="FRIENDS")
+@Table(name = "FRIENDS")
 public class Friends extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -1223489243809L;
@@ -71,6 +71,5 @@ public class Friends extends BaseEntity implements Serializable {
     public void setActive(Boolean active) {
         isActive = active;
     }
-
 
 }

@@ -18,6 +18,8 @@ public class UserController {
 
     @PostMapping("/signup")
     public SignUpResponse signUpUser(@RequestBody SignUpRequest signUpRequest) {
-        return new SignUpResponse(userService.signUpUser(signUpRequest.getUserId(), signUpRequest.getUserName(), signUpRequest.getPassword()));
+        return new SignUpResponse(userService.signUpUser(signUpRequest.getUserId(),
+                                                         signUpRequest.getUserName(),
+                                                         signUpRequest.getPassword()));
     }
 }

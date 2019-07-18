@@ -10,15 +10,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServicempl implements UserService{
+public class UserServicempl implements UserService {
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-
     public UserServicempl(AccountRepository accountRepository,
                           ModelMapper modelMapper,
-                          PasswordEncoder passwordEncoder) {this.accountRepository = accountRepository;
+                          PasswordEncoder passwordEncoder) {
+        this.accountRepository = accountRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }

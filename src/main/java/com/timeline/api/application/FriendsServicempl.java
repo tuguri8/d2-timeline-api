@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.NoSuchElementException;
 
 @Service
-public class FriendsServicempl implements FriendsService{
+public class FriendsServicempl implements FriendsService {
 
     private final AccountRepository accountRepository;
     private final FriendsRepository friendsRepository;
@@ -20,7 +20,8 @@ public class FriendsServicempl implements FriendsService{
 
     public FriendsServicempl(AccountRepository accountRepository,
                              FriendsRepository friendsRepository,
-                             ModelMapper modelMapper) {this.accountRepository = accountRepository;
+                             ModelMapper modelMapper) {
+        this.accountRepository = accountRepository;
         this.friendsRepository = friendsRepository;
         this.modelMapper = modelMapper;
     }
