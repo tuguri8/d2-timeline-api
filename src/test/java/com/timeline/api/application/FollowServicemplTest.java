@@ -39,14 +39,21 @@ public class FollowServicemplTest {
     public void 팔로우_테스트() {
         followService.followUser("tuguri87", "tuguri5");
         assertThat(followRepository.findByUserId("tuguri87").isPresent()).isTrue();
-        followRepository.delete(followRepository.findByUserId("tuguri87").get());
+        followRepository.delete(followRepository.findByUserIdAndFollowId("tuguri87","tuguri5").get());
     }
 
     @Test
     public void 언팔로우_테스트() {
         followService.followUser("tuguri87", "tuguri5");
         followService.unFollowUser("tuguri87", "tuguri5");
-        assertThat(followRepository.findByUserId("tuguri87").isPresent()).isFalse();
+        assertThat(followRepository.findByUserIdAndFollowId("tuguri87", "tuguri5").isPresent()).isFalse();
+    }
+
+    @Test
+    public void 팔로우목록_불러오기() {
+        followService.followUser("tuguri5", "tuguri87");
+        assertThat(followService.getFollowList("tuguri5").size() > 0).isTrue();
+        followRepository.delete(followRepository.findByUserIdAndFollowId("tuguri5","tuguri87").get());
     }
 
     @After
