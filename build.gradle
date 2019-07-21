@@ -40,6 +40,7 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.3'
     implementation 'com.github.ben-manes.caffeine:caffeine'
     compile 'org.modelmapper:modelmapper:2.3.0'
+    compile group: 'org.springframework.data', name: 'spring-data-cassandra', version: '2.1.9.RELEASE'
 
     runtime 'com.h2database:h2'
 

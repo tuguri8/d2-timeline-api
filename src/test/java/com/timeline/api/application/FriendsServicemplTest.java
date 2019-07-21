@@ -1,10 +1,8 @@
 package com.timeline.api.application;
 
-import com.timeline.api.domain.Account;
-import com.timeline.api.domain.AccountRepository;
-import com.timeline.api.domain.Friends;
-import com.timeline.api.domain.FriendsRepository;
-import com.timeline.api.domain.UserRole;
+import com.timeline.api.domain.entity.Account;
+import com.timeline.api.infrastructure.repository.AccountRepository;
+import com.timeline.api.domain.entity.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
 package com.timeline.api.security.provider;
 
-import com.timeline.api.domain.Account;
-import com.timeline.api.domain.AccountRepository;
+import com.timeline.api.domain.entity.Account;
+import com.timeline.api.infrastructure.repository.AccountRepository;
 import com.timeline.api.security.AccountContext;
 import com.timeline.api.security.tokens.PostAuthorizationToken;
 import com.timeline.api.security.tokens.PreAuthorizationToken;

@@ -1,7 +1,7 @@
 package com.timeline.api.security.jwt;
 
-import com.timeline.api.domain.Account;
-import com.timeline.api.domain.UserRole;
+import com.timeline.api.domain.entity.Account;
+import com.timeline.api.domain.entity.UserRole;
 import com.timeline.api.security.AccountContext;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

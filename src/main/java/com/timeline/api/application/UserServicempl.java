@@ -2,9 +2,9 @@ package com.timeline.api.application;
 
 import com.timeline.api.application.exception.UserServiceException;
 import com.timeline.api.application.model.UserModel;
-import com.timeline.api.domain.Account;
-import com.timeline.api.domain.AccountRepository;
-import com.timeline.api.domain.UserRole;
+import com.timeline.api.domain.entity.Account;
+import com.timeline.api.infrastructure.repository.AccountRepository;
+import com.timeline.api.domain.entity.UserRole;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

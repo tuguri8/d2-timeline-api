@@ -1,6 +1,14 @@
 server:
   port: 8080
 spring:
+  data:
+    cassandra:
+      keyspace-name: mykeyspace
+      contact-points: localhost
+      port: 9042
+      schema-action: create_if_not_exists
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     platform: h2
     url: jdbc:h2:mem:timeline;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL

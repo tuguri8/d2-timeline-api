@@ -1,8 +1,8 @@
 package com.timeline.api;
 
-import com.timeline.api.domain.Account;
-import com.timeline.api.domain.AccountRepository;
-import com.timeline.api.domain.UserRole;
+import com.timeline.api.domain.entity.Account;
+import com.timeline.api.infrastructure.repository.AccountRepository;
+import com.timeline.api.domain.entity.UserRole;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,7 +32,7 @@ public class ApiApplication {
     CommandLineRunner bootstrapTestAccount(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             Account account = new Account();
-            account.setUserId("tuguri8");
+            account.setUserId("tuguri87");
             account.setPassword(passwordEncoder.encode("ahfk12"));
             account.setUserRole(UserRole.USER);
             account.setUserName("한승우");

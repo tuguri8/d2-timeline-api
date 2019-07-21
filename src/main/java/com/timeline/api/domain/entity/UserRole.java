@@ -1,4 +1,4 @@
-package com.timeline.api.domain;
+package com.timeline.api.domain.entity;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;

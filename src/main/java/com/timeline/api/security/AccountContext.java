@@ -1,7 +1,7 @@
 package com.timeline.api.security;
 
-import com.timeline.api.domain.Account;
-import com.timeline.api.domain.UserRole;
+import com.timeline.api.domain.entity.Account;
+import com.timeline.api.domain.entity.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

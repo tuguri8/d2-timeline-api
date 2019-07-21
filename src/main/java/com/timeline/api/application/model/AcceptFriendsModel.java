@@ -1,6 +1,6 @@
 package com.timeline.api.application.model;
 
-import com.timeline.api.domain.Account;
+import com.timeline.api.domain.entity.Account;
 
 public class AcceptFriendsModel {
     private Account user;

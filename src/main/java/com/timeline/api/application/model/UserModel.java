@@ -1,6 +1,6 @@
 package com.timeline.api.application.model;
 
-import com.timeline.api.domain.UserRole;
+import com.timeline.api.domain.entity.UserRole;
 
 public class UserModel {
     private String userId;
