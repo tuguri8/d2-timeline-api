@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface FollowRepository extends CrudRepository<Follow, String> {
     Optional<Follow> findByUserId(String userId);
+    Optional<Follow> findByUserIdAndFollowId(String userId, String followId);
 }

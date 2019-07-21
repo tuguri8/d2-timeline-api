@@ -7,6 +7,7 @@ import com.timeline.api.infrastructure.repository.FollowRepository;
 import com.timeline.api.interfaces.dto.response.FollowUserResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -28,6 +29,15 @@ public class FollowServicempl implements FollowService {
         follow.setUserId(userId);
         follow.setFollowId(followId);
         followRepository.save(follow);
+        return transform(follow);
+    }
+
+    @Override
+    @Transactional
+    public FollowUserResponse unFollowUser(String userId, String unFollowId) {
+        Follow follow = followRepository.findByUserIdAndFollowId(userId, unFollowId)
+                                        .orElseThrow(() -> new NoSuchElementException("팔로우 하지 않은 회원입니다."));
+        followRepository.delete(follow);
         return transform(follow);
     }
 

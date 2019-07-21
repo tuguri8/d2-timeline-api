@@ -17,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Transactional
 public class FollowServicemplTest {
 
     @Autowired
@@ -31,13 +30,13 @@ public class FollowServicemplTest {
 
     @Before
     public void setUp() {
-        userService.signUpUser("tuguri1", "김길동", "asdf12");
-        userService.signUpUser("tuguri2", "홍길동", "asdf12");
+        userService.signUpUser("tuguri5", "김길동", "asdf12");
+        userService.signUpUser("tuguri6", "홍길동", "asdf12");
     }
 
     @Test
     public void 팔로우_테스트() {
-        followService.followUser("tuguri1", "tuguri2");
-        assertThat(followRepository.findByUserId("tuguri1").isPresent()).isTrue();
+        followService.followUser("tuguri5", "tuguri6");
+        assertThat(followRepository.findByUserId("tuguri5").isPresent()).isTrue();
     }
 }
