@@ -10,7 +10,10 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,8 +22,8 @@ public class Post implements Serializable {
 
     private static final long serialVersionUID = -14238791237843278L;
 
-    @PrimaryKeyColumn(name = "TIMESTAMP_DAY", type = PrimaryKeyType.PARTITIONED, ordinal = 1)
-    private Long timestampDay;
+    @PrimaryKeyColumn(name = "YEAR_MONTH", type = PrimaryKeyType.PARTITIONED)
+    private String yearMonth;
 
     @Column("CONTENT")
     private String content;
@@ -28,24 +31,29 @@ public class Post implements Serializable {
     @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
     private UUID postId;
 
+    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.CLUSTERED)
+    private String userId;
+
+    @Column("CREATED_AT")
     private LocalDateTime createdDate;
 
     public Post() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYYMM");
         this.createdDate = LocalDateTime.now();
         this.postId = UUIDs.timeBased();
-        this.timestampDay = DateUtils.truncate(new Date(), java.util.Calendar.DAY_OF_MONTH).getTime() / 1000;;
+        this.yearMonth = LocalDate.now().format(formatter);
     }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Long getTimestampDay() {
-        return timestampDay;
+    public String getYearMonth() {
+        return yearMonth;
     }
 
-    public void setTimestampDay(Long timestampDay) {
-        this.timestampDay = timestampDay;
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 
     public String getContent() {
@@ -62,6 +70,14 @@ public class Post implements Serializable {
 
     public void setPostId(UUID postId) {
         this.postId = postId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getCreatedDate() {
