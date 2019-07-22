@@ -1,13 +1,13 @@
 package com.timeline.api.interfaces.dto.response;
 
 public class FollowUserResponse {
-    private String followName;
+    private String userName;
 
-    public String getFollowName() {
-        return followName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setFollowName(String followName) {
-        this.followName = followName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
