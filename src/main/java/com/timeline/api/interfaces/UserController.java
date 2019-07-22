@@ -1,6 +1,6 @@
 package com.timeline.api.interfaces;
 
-import com.timeline.api.application.UserService;
+import com.timeline.api.application.service.UserService;
 import com.timeline.api.interfaces.dto.request.SignUpRequest;
 import com.timeline.api.interfaces.dto.response.SignUpResponse;
 import org.springframework.web.bind.annotation.PostMapping;

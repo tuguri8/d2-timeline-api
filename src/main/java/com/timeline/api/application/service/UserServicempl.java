@@ -1,4 +1,4 @@
-package com.timeline.api.application;
+package com.timeline.api.application.service;
 
 import com.timeline.api.application.exception.UserServiceException;
 import com.timeline.api.application.model.UserModel;

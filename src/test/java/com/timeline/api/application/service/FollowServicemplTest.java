@@ -1,17 +1,15 @@
-package com.timeline.api.application;
+package com.timeline.api.application.service;
 
+import com.timeline.api.application.service.FollowService;
+import com.timeline.api.application.service.UserService;
 import com.timeline.api.domain.entity.Account;
-import com.timeline.api.domain.entity.Follow;
 import com.timeline.api.infrastructure.repository.AccountRepository;
 import com.timeline.api.infrastructure.repository.FollowRepository;
-import com.timeline.api.interfaces.dto.response.FollowUserResponse;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
