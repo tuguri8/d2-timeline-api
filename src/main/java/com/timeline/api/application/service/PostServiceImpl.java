@@ -46,7 +46,6 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostingResponse savePost(String userId, String content) {
         Post post = new Post();
-        post.setUserId(userId);
         post.setContent(content);
         postRepository.save(post);
         savePostToUserHome(userId, post.getPostId());

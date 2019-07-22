@@ -19,9 +19,6 @@ public class Post implements Serializable {
 
     private static final long serialVersionUID = -14238791237843278L;
 
-    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED, ordinal = 0)
-    private String userId;
-
     @PrimaryKeyColumn(name = "TIMESTAMP_DAY", type = PrimaryKeyType.PARTITIONED, ordinal = 1)
     private Long timestampDay;
 
@@ -41,14 +38,6 @@ public class Post implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public Long getTimestampDay() {

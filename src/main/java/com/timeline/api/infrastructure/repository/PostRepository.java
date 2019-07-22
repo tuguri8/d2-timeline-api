@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends CrudRepository<Post, String> {
-    Optional<List<Post>> findByUserIdAndTimestampDay(String userId, Long timestampDay);
+    Optional<List<Post>> findByTimestampDay(Long timestampDay);
 }

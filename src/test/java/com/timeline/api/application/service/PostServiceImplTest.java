@@ -43,9 +43,9 @@ public class PostServiceImplTest {
     @Test
     public void 포스팅_테스트() {
         postService.savePost("tuguri8", "하이");
-        assertThat(postRepository.findByUserIdAndTimestampDay("tuguri8", getCurrentDateTimestamp()).isPresent()).isTrue();
+        assertThat(postRepository.findByTimestampDay(getCurrentDateTimestamp()).isPresent()).isTrue();
         assertThat(homeRepository.findByUserId("tuguri8").isPresent()).isTrue();
-        postRepository.delete(postRepository.findByUserIdAndTimestampDay("tuguri8", getCurrentDateTimestamp()).get().get(0));
+        postRepository.delete(postRepository.findByTimestampDay(getCurrentDateTimestamp()).get().get(0));
         homeRepository.delete(homeRepository.findByUserId("tuguri8").get().get(0));
     }
 
