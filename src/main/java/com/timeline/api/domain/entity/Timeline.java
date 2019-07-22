@@ -18,10 +18,7 @@ public class Timeline implements Serializable {
     @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED)
     private String userId;
 
-    @PrimaryKeyColumn(name = "TIMESTAMP_HOUR", type = PrimaryKeyType.CLUSTERED)
-    private Long timestamp_hour;
-
-    @Column("POST_ID")
+    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
     private UUID postId;
 
     public Timeline() {
@@ -37,14 +34,6 @@ public class Timeline implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public Long getTimestamp_hour() {
-        return timestamp_hour;
-    }
-
-    public void setTimestamp_hour(Long timestamp_hour) {
-        this.timestamp_hour = timestamp_hour;
     }
 
     public UUID getPostId() {

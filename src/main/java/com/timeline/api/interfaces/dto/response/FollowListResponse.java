@@ -1,9 +1,16 @@
 package com.timeline.api.interfaces.dto.response;
 
-import com.timeline.api.application.model.AddFriendsModel;
-
-public class AddFriendsResponse {
+public class FollowListResponse {
+    private String userId;
     private String userName;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getUserName() {
         return userName;
@@ -11,9 +18,5 @@ public class AddFriendsResponse {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public AddFriendsResponse(AddFriendsModel addFriendsModel) {
-        this.userName = addFriendsModel.getFriend().getUserName();
     }
 }
