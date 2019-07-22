@@ -28,6 +28,10 @@ public class Post implements Serializable {
     @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
     private UUID postId;
 
+    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.CLUSTERED)
+    private String userId;
+
+    @Column("CREATED_AT")
     private LocalDateTime createdDate;
 
     public Post() {
@@ -70,5 +74,13 @@ public class Post implements Serializable {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
