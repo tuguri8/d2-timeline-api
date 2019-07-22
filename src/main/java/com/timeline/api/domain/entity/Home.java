@@ -18,10 +18,7 @@ public class Home implements Serializable {
     @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED)
     private String userId;
 
-    @PrimaryKeyColumn(name = "TIMESTAMP_DAY", type = PrimaryKeyType.CLUSTERED)
-    private Long timestamp_day;
-
-    @Column("POST_ID")
+    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
     private UUID postId;
 
     public Home() {
@@ -37,14 +34,6 @@ public class Home implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public Long getTimestamp_day() {
-        return timestamp_day;
-    }
-
-    public void setTimestamp_day(Long timestamp_day) {
-        this.timestamp_day = timestamp_day;
     }
 
     public UUID getPostId() {

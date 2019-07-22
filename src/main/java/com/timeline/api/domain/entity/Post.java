@@ -16,10 +16,10 @@ public class Post implements Serializable {
 
     private static final long serialVersionUID = -14238791237843278L;
 
-    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED, ordinal = 0)
     private String userId;
 
-    @PrimaryKeyColumn(name = "TIMESTAMP_DAY", type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = "TIMESTAMP_DAY", type = PrimaryKeyType.PARTITIONED, ordinal = 1)
     private Long timestamp_day;
 
     @Column("CONTENT")
@@ -28,7 +28,7 @@ public class Post implements Serializable {
     @Column("POST_ID")
     private UUID postId;
 
-    @Column("CREATED_DATE")
+    @PrimaryKeyColumn(name = "CREATED_DATE", type = PrimaryKeyType.CLUSTERED)
     private LocalDateTime createdDate;
 
     public Post() {

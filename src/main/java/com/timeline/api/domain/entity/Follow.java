@@ -1,24 +1,37 @@
 package com.timeline.api.domain.entity;
 
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
+import com.timeline.api.domain.entity.common.BaseEntity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+@Entity
 @Table
-public class Follow implements Serializable {
+public class Follow extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -14238791237843171L;
 
-    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED)
-    private String userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @PrimaryKeyColumn(name = "FOLLOW_ID", type = PrimaryKeyType.CLUSTERED)
-    private String followId;
+    // 기준 유저 계정
+    @JoinColumn(name = "USER", nullable = false)
+    @ManyToOne
+    private Account user;
+
+    // 친구 유저 계정
+    @JoinColumn(name = "FOLLOW", nullable = false)
+    @ManyToOne
+    private Account follow;
 
     public Follow() {
     }
@@ -27,19 +40,19 @@ public class Follow implements Serializable {
         return serialVersionUID;
     }
 
-    public String getUserId() {
-        return userId;
+    public Account getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(Account user) {
+        this.user = user;
     }
 
-    public String getFollowId() {
-        return followId;
+    public Account getFollow() {
+        return follow;
     }
 
-    public void setFollowId(String followId) {
-        this.followId = followId;
+    public void setFollow(Account follow) {
+        this.follow = follow;
     }
 }

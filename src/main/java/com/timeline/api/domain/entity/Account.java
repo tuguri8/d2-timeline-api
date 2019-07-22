@@ -1,34 +1,32 @@
 package com.timeline.api.domain.entity;
 
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
+import com.timeline.api.domain.entity.common.BaseEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-import static java.time.ZoneId.systemDefault;
-
+@Entity
 @Table
-public class Account implements Serializable {
+public class Account extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -14238791237843141L;
 
-    @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED)
+    @Id
+    @Column(name = "USER_ID", unique = true, nullable = false)
     private String userId;
 
-    @Column("USER_NAME")
+    @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
-    @Column("PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column("USER_ROLE")
+    @Column(name = "USER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
 
