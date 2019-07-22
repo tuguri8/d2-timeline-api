@@ -1,4 +1,4 @@
-package com.timeline.api.application;
+package com.timeline.api.application.service;
 
 import com.timeline.api.domain.entity.Account;
 import com.timeline.api.domain.entity.Follow;

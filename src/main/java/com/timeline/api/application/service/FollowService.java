@@ -1,4 +1,4 @@
-package com.timeline.api.application;
+package com.timeline.api.application.service;
 
 import com.timeline.api.interfaces.dto.response.FollowListResponse;
 import com.timeline.api.interfaces.dto.response.FollowUserResponse;

@@ -1,5 +1,7 @@
 package com.timeline.api.domain.entity;
 
+import com.datastax.driver.core.utils.UUIDs;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tomcat.jni.Local;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
@@ -9,6 +11,7 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Table
@@ -20,19 +23,20 @@ public class Post implements Serializable {
     private String userId;
 
     @PrimaryKeyColumn(name = "TIMESTAMP_DAY", type = PrimaryKeyType.PARTITIONED, ordinal = 1)
-    private Long timestamp_day;
+    private Long timestampDay;
 
     @Column("CONTENT")
     private String content;
 
-    @Column("POST_ID")
+    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
     private UUID postId;
 
-    @PrimaryKeyColumn(name = "CREATED_DATE", type = PrimaryKeyType.CLUSTERED)
     private LocalDateTime createdDate;
 
     public Post() {
         this.createdDate = LocalDateTime.now();
+        this.postId = UUIDs.timeBased();
+        this.timestampDay = DateUtils.truncate(new Date(), java.util.Calendar.DAY_OF_MONTH).getTime() / 1000;;
     }
 
     public static long getSerialVersionUID() {
@@ -47,12 +51,12 @@ public class Post implements Serializable {
         this.userId = userId;
     }
 
-    public Long getTimestamp_day() {
-        return timestamp_day;
+    public Long getTimestampDay() {
+        return timestampDay;
     }
 
-    public void setTimestamp_day(Long timestamp_day) {
-        this.timestamp_day = timestamp_day;
+    public void setTimestampDay(Long timestampDay) {
+        this.timestampDay = timestampDay;
     }
 
     public String getContent() {
