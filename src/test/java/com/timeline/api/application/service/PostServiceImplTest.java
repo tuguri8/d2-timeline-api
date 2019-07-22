@@ -20,6 +20,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 public class PostServiceImplTest {
 
@@ -32,6 +33,10 @@ public class PostServiceImplTest {
     @Autowired
     private HomeRepository homeRepository;
     @Autowired
+    private UserService userService;
+    @Autowired
+    private FollowService followService;
+    @Autowired
     private TimelineRepository timelineRepository;
 
     @Test
@@ -40,18 +45,18 @@ public class PostServiceImplTest {
         log.info(String.valueOf(time));
     }
 
-    @Test
-    public void 포스팅_테스트() {
-        postService.savePost("tuguri8", "하이");
-        assertThat(postRepository.findByTimestampDay(getCurrentDateTimestamp()).isPresent()).isTrue();
-        assertThat(homeRepository.findByUserId("tuguri8").isPresent()).isTrue();
-        postRepository.delete(postRepository.findByTimestampDay(getCurrentDateTimestamp()).get().get(0));
-        homeRepository.delete(homeRepository.findByUserId("tuguri8").get().get(0));
-    }
 
     @Test
-    public void 타임라인_저장() {
-        log.info(String.valueOf(timelineRepository.saveWithTTL("tuguri87", UUIDs.timeBased())));
+    public void 포스팅_테스트() {
+        userService.signUpUser("tuguri4", "김길동", "asdf12");
+        followService.followUser("tuguri4", "tuguri87");
+        postService.savePost("tuguri87", "하이");
+        assertThat(postRepository.findByTimestampDay(getCurrentDateTimestamp()).isPresent()).isTrue();
+        assertThat(homeRepository.findByUserId("tuguri87").isPresent()).isTrue();
+        assertThat(timelineRepository.findByUserId("tuguri4").isPresent()).isTrue();
+        postRepository.deleteAll();
+        homeRepository.deleteAll();
+        timelineRepository.deleteAll();
     }
 
     private Long getCurrentDateTimestamp() {
