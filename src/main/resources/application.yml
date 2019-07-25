@@ -19,3 +19,8 @@ spring:
   h2:
     console:
       enabled: true
+kafka:
+  bootstrapAddress: localhost:9092
+message:
+  topic:
+    name: posting

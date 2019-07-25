@@ -45,4 +45,7 @@ dependencies {
     runtime 'com.h2database:h2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compile 'org.springframework.kafka:spring-kafka:2.2.7.RELEASE'
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.3.0'
 }
