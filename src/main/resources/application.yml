@@ -1,6 +1,13 @@
 server:
   port: 8080
 spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+          order_inserts: true
+    show-sql: true
   data:
     cassandra:
       keyspace-name: mykeyspace
@@ -19,3 +26,9 @@ spring:
   h2:
     console:
       enabled: true
+kafka:
+  bootstrapAddress: localhost:9092
+  groupId: posting
+message:
+  topic:
+    name: posting

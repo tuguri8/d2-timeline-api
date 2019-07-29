@@ -1,5 +1,6 @@
 package com.timeline.api.application.service;
 
+import com.timeline.api.application.model.PostingMessageModel;
 import com.timeline.api.domain.entity.Home;
 import com.timeline.api.domain.entity.Post;
 import com.timeline.api.domain.entity.Timeline;
@@ -8,9 +9,11 @@ import com.timeline.api.infrastructure.repository.PostRepository;
 import com.timeline.api.infrastructure.repository.TimelineRepository;
 import com.timeline.api.interfaces.dto.response.FollowerListResponse;
 import com.timeline.api.interfaces.dto.response.PostingResponse;
+import com.timeline.api.infrastructure.kafka.producer.KafkaProducer;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,23 +26,23 @@ public class PostServiceImpl implements PostService {
 
     private static final Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
 
-
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
     private final HomeRepository homeRepository;
     private final FollowService followService;
-    private final TimelineRepository timelineRepository;
+    private final KafkaProducer kafkaProducer;
 
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            HomeRepository homeRepository,
                            FollowService followService,
-                           TimelineRepository timelineRepository) {
+                           KafkaProducer kafkaProducer
+    ) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.homeRepository = homeRepository;
         this.followService = followService;
-        this.timelineRepository = timelineRepository;
+        this.kafkaProducer = kafkaProducer;
     }
 
     @Override
@@ -50,7 +53,14 @@ public class PostServiceImpl implements PostService {
         post.setContent(content);
         postRepository.save(post);
         savePostToUserHome(userId, post.getPostId());
-        log.info("타임라인에 저장된 개수 : " + savePostToFollowerTimeline(userId, post.getPostId()).size());
+
+        List<FollowerListResponse> followerList = followService.getFollowerList(userId);
+        PostingMessageModel postingMessageModel = new PostingMessageModel();
+        postingMessageModel.setPostId(post.getPostId());
+        postingMessageModel.setFollowerId(followerList.stream()
+                                                      .map(FollowerListResponse::getUserId)
+                                                      .collect(Collectors.toList()));
+        kafkaProducer.sendMessage(postingMessageModel);
         return modelMapper.map(post, PostingResponse.class);
     }
 
@@ -60,13 +70,5 @@ public class PostServiceImpl implements PostService {
         home.setPostId(postId);
         home.setUserId(userId);
         homeRepository.save(home);
-    }
-
-    // 팔로워 들의 타임라인에 게시물 번호 추가(TTL)
-    private List<Timeline> savePostToFollowerTimeline(String userId, UUID postId) {
-        List<FollowerListResponse> followerList = followService.getFollowerList(userId);
-        return followerList.stream()
-                    .map(follower -> timelineRepository.saveWithTTL(follower.getUserId(), postId))
-                    .collect(Collectors.toList());
     }
 }
