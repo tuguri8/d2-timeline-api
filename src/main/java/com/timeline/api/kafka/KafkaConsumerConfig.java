@@ -1,5 +1,6 @@
 package com.timeline.api.kafka;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,17 +22,19 @@ public class KafkaConsumerConfig {
     @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
+    @Bean
     public ConsumerFactory<String, PostingMessage> postingConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "posting");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(PostingMessage.class));
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.timeline.api.kafka");
+        return new DefaultKafkaConsumerFactory<>(props);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, PostingMessage> posttingKafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, PostingMessage> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, PostingMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(postingConsumerFactory());
         return factory;

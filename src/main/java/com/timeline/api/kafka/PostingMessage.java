@@ -1,35 +1,21 @@
 package com.timeline.api.kafka;
 
+import java.util.List;
 import java.util.UUID;
 
 public class PostingMessage {
-    private String senderId;
-    private String receiverId;
+    private List<String> followerId;
     private UUID postId;
 
     public PostingMessage() {
     }
 
-    public PostingMessage(String senderId, String receiverId, UUID postId) {
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.postId = postId;
+    public List<String> getFollowerId() {
+        return followerId;
     }
 
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
+    public void setFollowerId(List<String> followerId) {
+        this.followerId = followerId;
     }
 
     public UUID getPostId() {
@@ -42,6 +28,9 @@ public class PostingMessage {
 
     @Override
     public String toString() {
-        return "senderID: " + senderId + ", receiverID: " + receiverId;
+        return "PostingMessage{" +
+            "followerId=" + followerId +
+            ", postId=" + postId +
+            '}';
     }
 }
