@@ -1,4 +1,4 @@
-package com.timeline.api.kafka;
+package com.timeline.api.infrastructure.kafka;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;

@@ -1,13 +1,13 @@
-package com.timeline.api.kafka;
+package com.timeline.api.application.model;
 
 import java.util.List;
 import java.util.UUID;
 
-public class PostingMessage {
+public class PostingMessageModel {
     private List<String> followerId;
     private UUID postId;
 
-    public PostingMessage() {
+    public PostingMessageModel() {
     }
 
     public List<String> getFollowerId() {
@@ -28,7 +28,7 @@ public class PostingMessage {
 
     @Override
     public String toString() {
-        return "PostingMessage{" +
+        return "PostingMessageModel{" +
             "followerId=" + followerId +
             ", postId=" + postId +
             '}';
