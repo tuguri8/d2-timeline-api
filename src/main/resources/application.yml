@@ -28,6 +28,7 @@ spring:
       enabled: true
 kafka:
   bootstrapAddress: localhost:9092
+  groupId: posting
 message:
   topic:
     name: posting

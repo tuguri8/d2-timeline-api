@@ -4,6 +4,7 @@ import com.timeline.api.application.model.PostingMessageModel;
 import com.timeline.api.infrastructure.repository.TimelineRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class KafkaConsumer {
 
     public KafkaConsumer(TimelineRepository timelineRepository) {this.timelineRepository = timelineRepository;}
 
-    // 팔로워 1명의 타임라인에 게시물 번호 추가(TTL)
-    @KafkaListener(topics = "${message.topic.name}", groupId = "posting")
+    // 팔로워들의 타임라인에 게시물 번호 추가(TTL)
+    @KafkaListener(topics = "${message.topic.name}", groupId = "${kafka.groupId}")
     public void postingListener(PostingMessageModel postingMessageModel) {
         UUID stringID = postingMessageModel.getPostId();
         List<String> followers = postingMessageModel.getFollowerId();

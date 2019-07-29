@@ -68,8 +68,6 @@ public class FollowServicempl implements FollowService {
         Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
         List<Follow> followerList = followRepository.findByFollow(user).orElse(Collections.emptyList());
 
-        int followNum=followRepository.findByFollow(user).orElse(Collections.emptyList()).size();
-
         return followerList.stream()
                            .map(follower -> modelMapper.map(follower.getUser(), FollowerListResponse.class))
                            .collect(Collectors.toList());
