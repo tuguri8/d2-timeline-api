@@ -39,8 +39,8 @@ public class FollowController {
     public List<FollowerListResponse> getFollowerList(Authentication authentication) {
         return followService.getFollowerList(ExtractUserFromAuth.getUserNameFromAuthentication(authentication));
     }
-    @PreAuthorize("hasRole('ROLE_USER')")
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public FollowUserResponse followUser(@RequestBody FollowRequest addFollowRequest, Authentication authentication) {
         return followService.followUser(ExtractUserFromAuth.getUserNameFromAuthentication(authentication), addFollowRequest.getFollowId());

@@ -3,6 +3,7 @@ package com.timeline.api.domain.entity;
 import com.datastax.driver.core.utils.UUIDs;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.tomcat.jni.Local;
+import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
@@ -28,7 +29,7 @@ public class Post implements Serializable {
     @Column("CONTENT")
     private String content;
 
-    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
     private UUID postId;
 
     @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.CLUSTERED)
