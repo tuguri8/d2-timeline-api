@@ -8,15 +8,21 @@ import com.timeline.api.infrastructure.repository.HomeRepository;
 import com.timeline.api.infrastructure.repository.PostRepository;
 import com.timeline.api.infrastructure.repository.TimelineRepository;
 import com.timeline.api.interfaces.dto.response.FollowerListResponse;
+import com.timeline.api.interfaces.dto.response.HomePostResponse;
 import com.timeline.api.interfaces.dto.response.PostingResponse;
 import com.timeline.api.infrastructure.kafka.producer.KafkaProducer;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,6 +51,8 @@ public class PostServiceImpl implements PostService {
         this.kafkaProducer = kafkaProducer;
     }
 
+    // 게시글 입력
+    @CacheEvict(value = "home", key = "#userId")
     @Override
     @Transactional
     public PostingResponse savePost(String userId, String content) {
@@ -64,11 +72,34 @@ public class PostServiceImpl implements PostService {
         return modelMapper.map(post, PostingResponse.class);
     }
 
+    // 홈 게시글 조회
+    @Cacheable(value = "home", key = "#userId")
+    @Override
+    public List<HomePostResponse> getHomePostList(String userId) {
+        List<Home> homeList = homeRepository.findByUserId(userId).orElse(Collections.emptyList());
+        // 홈 테이블에서 포스트 ID 조회
+        List<UUID> postIdList = homeList.stream()
+                                            .map(Home::getPostId)
+                                            .collect(Collectors.toList());
+        // 포스트 조회
+        List<Post> postList = postRepository.findByYearMonthAndPostIdIn(getNowYearMonth(), postIdList)
+                                            .orElse(Collections.emptyList());
+        return postList.stream()
+                       .map(post -> modelMapper.map(post, HomePostResponse.class))
+                       .collect(Collectors.toList());
+    }
+
     // 홈 저장소에 게시물 번호 저장
     private void savePostToUserHome(String userId, UUID postId) {
         Home home = new Home();
         home.setPostId(postId);
         home.setUserId(userId);
         homeRepository.save(home);
+    }
+
+    // 현재 yearMonth 조회
+    private String getNowYearMonth() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYYMM");
+        return LocalDate.now().format(formatter);
     }
 }
