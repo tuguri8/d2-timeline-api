@@ -1,5 +1,6 @@
 package com.timeline.api.domain.entity;
 
+import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
@@ -18,7 +19,7 @@ public class Home implements Serializable {
     @PrimaryKeyColumn(name = "USER_ID", type = PrimaryKeyType.PARTITIONED)
     private String userId;
 
-    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(name = "POST_ID", type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)
     private UUID postId;
 
     public Home() {
