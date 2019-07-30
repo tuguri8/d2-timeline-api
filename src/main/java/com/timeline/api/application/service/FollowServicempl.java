@@ -8,6 +8,9 @@ import com.timeline.api.interfaces.dto.response.FollowListResponse;
 import com.timeline.api.interfaces.dto.response.FollowUserResponse;
 import com.timeline.api.interfaces.dto.response.FollowerListResponse;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,7 @@ public class FollowServicempl implements FollowService {
         this.modelMapper = modelMapper;
     }
 
+    @Caching(evict = {@CacheEvict(value = "follow", key = "#userId"), @CacheEvict(value = "follower", key = "#followId")})
     @Override
     @Transactional
     public FollowUserResponse followUser(String userId, String followId) {
@@ -43,6 +47,7 @@ public class FollowServicempl implements FollowService {
         return modelMapper.map(followUser, FollowUserResponse.class);
     }
 
+    @Caching(evict = {@CacheEvict(value = "follow", key = "#userId"), @CacheEvict(value = "follower", key = "#unFollowId")})
     @Override
     @Transactional
     public FollowUserResponse unFollowUser(String userId, String unFollowId) {
@@ -54,6 +59,7 @@ public class FollowServicempl implements FollowService {
         return modelMapper.map(unFollowUser, FollowUserResponse.class);
     }
 
+    @Cacheable(value = "follow", key = "#userId")
     @Override
     public List<FollowListResponse> getFollowList(String userId) {
         Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
@@ -63,6 +69,7 @@ public class FollowServicempl implements FollowService {
                          .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "follower", key = "#userId")
     @Override
     public List<FollowerListResponse> getFollowerList(String userId) {
         Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
