@@ -7,11 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name = "ACCOUNT", indexes = {@Index(columnList = "USER_NAME")})
 public class Account extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -14238791237843141L;

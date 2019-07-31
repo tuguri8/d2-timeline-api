@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table
+@Table(name = "FOLLOW")
 public class Follow extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -14238791237843171L;
