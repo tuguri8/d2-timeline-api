@@ -49,7 +49,7 @@ public class FollowController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping
+    @PostMapping("/unfollow")
     public FollowUserResponse unFollowUser(@RequestBody FollowRequest unFollowRequest, Authentication authentication) {
         return followService.unFollowUser(ExtractUserFromAuth.getUserNameFromAuthentication(authentication), unFollowRequest.getFollowId());
     }
