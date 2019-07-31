@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class HomePostResponse {
     private String userId;
     private String content;
+    private String userName;
     private LocalDateTime createdDate;
 
     public String getUserId() {
@@ -29,5 +30,13 @@ public class HomePostResponse {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -3,10 +3,9 @@ package com.timeline.api.application.service;
 import com.timeline.api.application.model.PostingMessageModel;
 import com.timeline.api.domain.entity.Home;
 import com.timeline.api.domain.entity.Post;
-import com.timeline.api.domain.entity.Timeline;
+import com.timeline.api.infrastructure.repository.AccountRepository;
 import com.timeline.api.infrastructure.repository.HomeRepository;
 import com.timeline.api.infrastructure.repository.PostRepository;
-import com.timeline.api.infrastructure.repository.TimelineRepository;
 import com.timeline.api.interfaces.dto.response.FollowerListResponse;
 import com.timeline.api.interfaces.dto.response.HomePostResponse;
 import com.timeline.api.interfaces.dto.response.PostingResponse;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +22,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,18 +34,20 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
     private final HomeRepository homeRepository;
+    private final AccountRepository accountRepository;
     private final FollowService followService;
     private final KafkaProducer kafkaProducer;
 
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            HomeRepository homeRepository,
-                           FollowService followService,
+                           AccountRepository accountRepository, FollowService followService,
                            KafkaProducer kafkaProducer
     ) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.homeRepository = homeRepository;
+        this.accountRepository = accountRepository;
         this.followService = followService;
         this.kafkaProducer = kafkaProducer;
     }
@@ -58,6 +59,7 @@ public class PostServiceImpl implements PostService {
     public PostingResponse savePost(String userId, String content) {
         Post post = new Post();
         post.setUserId(userId);
+        post.setUserName(accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다.")).getUserName());
         post.setContent(content);
         postRepository.save(post);
         savePostToUserHome(userId, post.getPostId());
@@ -79,8 +81,8 @@ public class PostServiceImpl implements PostService {
         List<Home> homeList = homeRepository.findByUserId(userId).orElse(Collections.emptyList());
         // 홈 테이블에서 포스트 ID 조회
         List<UUID> postIdList = homeList.stream()
-                                            .map(Home::getPostId)
-                                            .collect(Collectors.toList());
+                                        .map(Home::getPostId)
+                                        .collect(Collectors.toList());
         // 포스트 조회
         List<Post> postList = postRepository.findByYearMonthAndPostIdIn(getNowYearMonth(), postIdList)
                                             .orElse(Collections.emptyList());

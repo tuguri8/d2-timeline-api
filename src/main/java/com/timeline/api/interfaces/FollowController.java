@@ -9,6 +9,7 @@ import com.timeline.api.interfaces.support.ExtractUserFromAuth;
 import com.timeline.api.security.tokens.PostAuthorizationToken;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/follow")
 public class FollowController {
