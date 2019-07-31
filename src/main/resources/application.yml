@@ -1,6 +1,21 @@
 server:
   port: 8080
 spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 100
+          order_inserts: true
+    show-sql: true
+  data:
+    cassandra:
+      keyspace-name: mykeyspace
+      contact-points: localhost
+      port: 9042
+      schema-action: create_if_not_exists
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     platform: h2
     url: jdbc:h2:mem:timeline;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL
@@ -11,3 +26,15 @@ spring:
   h2:
     console:
       enabled: true
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 50
+      thread-name-prefix: posting-thread
+kafka:
+  bootstrapAddress: localhost:9092
+  groupId: posting
+message:
+  topic:
+    name: posting
