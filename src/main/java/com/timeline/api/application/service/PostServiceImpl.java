@@ -7,6 +7,7 @@ import com.timeline.api.domain.entity.Post;
 import com.timeline.api.infrastructure.repository.AccountRepository;
 import com.timeline.api.infrastructure.repository.HomeRepository;
 import com.timeline.api.infrastructure.repository.PostRepository;
+import com.timeline.api.infrastructure.repository.TimelineRepository;
 import com.timeline.api.interfaces.dto.response.FollowerListResponse;
 import com.timeline.api.interfaces.dto.response.HomePostResponse;
 import com.timeline.api.interfaces.dto.response.PostingResponse;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,19 +39,21 @@ public class PostServiceImpl implements PostService {
     private final AccountRepository accountRepository;
     private final FollowService followService;
     private final KafkaProducer kafkaProducer;
+    private final TimelineRepository timelineRepository;
 
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            HomeRepository homeRepository,
                            AccountRepository accountRepository, FollowService followService,
-                           KafkaProducer kafkaProducer
-    ) {
+                           KafkaProducer kafkaProducer,
+                           TimelineRepository timelineRepository) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.homeRepository = homeRepository;
         this.accountRepository = accountRepository;
         this.followService = followService;
         this.kafkaProducer = kafkaProducer;
+        this.timelineRepository = timelineRepository;
     }
 
     // 게시글 입력
@@ -103,5 +107,12 @@ public class PostServiceImpl implements PostService {
     private String getNowYearMonth() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYYMM");
         return LocalDate.now().format(formatter);
+    }
+
+    // 카프카 리스너로부터 넘어온 팔로워와 postId를 비동기로 테이블에 넣어준다
+    @Async
+    public void insertToTimelineTable(UUID postId, String follower) {
+        timelineRepository.saveWithTTL(follower, postId);
+        log.info("타임라인에 저장 완료, 팔로워 : " + follower);
     }
 }

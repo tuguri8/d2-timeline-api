@@ -26,6 +26,12 @@ spring:
   h2:
     console:
       enabled: true
+  task:
+    execution:
+      pool:
+        core-size: 2
+        max-size: 50
+      thread-name-prefix: posting-thread
 kafka:
   bootstrapAddress: localhost:9092
   groupId: posting
