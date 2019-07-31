@@ -1,5 +1,6 @@
 package com.timeline.api.application.service;
 
+import com.timeline.api.application.exception.ServiceException;
 import com.timeline.api.application.model.PostingMessageModel;
 import com.timeline.api.domain.entity.Home;
 import com.timeline.api.domain.entity.Post;
@@ -22,7 +23,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
     public PostingResponse savePost(String userId, String content) {
         Post post = new Post();
         post.setUserId(userId);
-        post.setUserName(accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다.")).getUserName());
+        post.setUserName(accountRepository.findByUserId(userId).orElseThrow(ServiceException.UserIsNotExistException::new).getUserName());
         post.setContent(content);
         postRepository.save(post);
         savePostToUserHome(userId, post.getPostId());

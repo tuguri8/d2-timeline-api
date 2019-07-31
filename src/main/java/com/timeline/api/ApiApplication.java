@@ -3,7 +3,6 @@ package com.timeline.api;
 import com.timeline.api.domain.entity.Account;
 import com.timeline.api.infrastructure.repository.AccountRepository;
 import com.timeline.api.domain.entity.UserRole;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,16 +17,6 @@ public class ApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

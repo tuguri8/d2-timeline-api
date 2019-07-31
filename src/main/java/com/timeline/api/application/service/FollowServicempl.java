@@ -1,5 +1,6 @@
 package com.timeline.api.application.service;
 
+import com.timeline.api.application.exception.ServiceException;
 import com.timeline.api.domain.entity.Account;
 import com.timeline.api.domain.entity.Follow;
 import com.timeline.api.infrastructure.repository.AccountRepository;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,8 +38,11 @@ public class FollowServicempl implements FollowService {
     @Override
     @Transactional
     public FollowUserResponse followUser(String userId, String followId) {
-        Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
-        Account followUser = accountRepository.findByUserId(followId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
+        Account user = accountRepository.findByUserId(userId).orElseThrow(ServiceException.UserIsNotExistException::new);
+        Account followUser = accountRepository.findByUserId(followId).orElseThrow(ServiceException.UserIsNotExistException::new);
+        if (followRepository.findByUserAndFollow(user, followUser).isPresent()) {
+            throw new ServiceException.UserIsNotExistException();
+        }
         Follow follow = new Follow();
         follow.setUser(user);
         follow.setFollow(followUser);
@@ -51,10 +54,10 @@ public class FollowServicempl implements FollowService {
     @Override
     @Transactional
     public FollowUserResponse unFollowUser(String userId, String unFollowId) {
-        Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
-        Account unFollowUser = accountRepository.findByUserId(unFollowId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
+        Account user = accountRepository.findByUserId(userId).orElseThrow(ServiceException.UserIsNotExistException::new);
+        Account unFollowUser = accountRepository.findByUserId(unFollowId).orElseThrow(ServiceException.UserIsNotExistException::new);
         Follow follow = followRepository.findByUserAndFollow(user, unFollowUser)
-                                        .orElseThrow(() -> new NoSuchElementException("팔로우 하지 않은 회원입니다."));
+                                        .orElseThrow(ServiceException.NotFollowException::new);
         followRepository.delete(follow);
         return modelMapper.map(unFollowUser, FollowUserResponse.class);
     }
@@ -62,7 +65,7 @@ public class FollowServicempl implements FollowService {
     @Cacheable(value = "follow", key = "#userId")
     @Override
     public List<FollowListResponse> getFollowList(String userId) {
-        Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
+        Account user = accountRepository.findByUserId(userId).orElseThrow(ServiceException.UserIsNotExistException::new);
         List<Follow> followList = followRepository.findByUser(user).orElse(Collections.emptyList());
         return followList.stream()
                          .map(follow -> modelMapper.map(follow.getFollow(), FollowListResponse.class))
@@ -72,7 +75,7 @@ public class FollowServicempl implements FollowService {
     @Cacheable(value = "follower", key = "#userId")
     @Override
     public List<FollowerListResponse> getFollowerList(String userId) {
-        Account user = accountRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("아이디가 없습니다."));
+        Account user = accountRepository.findByUserId(userId).orElseThrow(ServiceException.UserIsNotExistException::new);
         List<Follow> followerList = followRepository.findByFollow(user).orElse(Collections.emptyList());
 
         return followerList.stream()

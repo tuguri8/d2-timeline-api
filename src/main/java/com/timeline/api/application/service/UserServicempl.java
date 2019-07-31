@@ -1,6 +1,6 @@
 package com.timeline.api.application.service;
 
-import com.timeline.api.application.exception.UserServiceException;
+import com.timeline.api.application.exception.ServiceException;
 import com.timeline.api.application.model.UserModel;
 import com.timeline.api.domain.entity.Account;
 import com.timeline.api.infrastructure.repository.AccountRepository;
@@ -31,7 +31,7 @@ public class UserServicempl implements UserService {
     @Override
     public UserModel signUpUser(String userId, String userName, String password) {
         if (accountRepository.findByUserId(userId).isPresent()) {
-            throw new UserServiceException.UserIdIsAlreadyInUseException();
+            throw new ServiceException.UserIdIsAlreadyInUseException();
         }
         Account account = new Account();
         account.setUserId(userId);
