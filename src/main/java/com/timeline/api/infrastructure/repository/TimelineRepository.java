@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface TimelineRepository extends CrudRepository<Timeline, String> {
-    @Query("INSERT INTO timeline (user_id, post_id) VALUES (?0, ?1) USING TTL 600")
+    @Query("INSERT INTO timeline (user_id, post_id) VALUES (?0, ?1) USING TTL 43200")
     Timeline saveWithTTL(String userId, UUID postId);
 
     Optional<List<Timeline>> findByUserId(String userId);
