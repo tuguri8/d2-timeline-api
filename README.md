@@ -2,7 +2,7 @@
 
 - D2 Campus Mini fest 7th 타임라인 만들기 프로젝트 백엔드
 - 라이선스 : MIT
-- 프론트엔트 저장소 : <https://github.com/tuguri8/d2-timeline-ui>
+- 프론트엔 저장소 : <https://github.com/tuguri8/d2-timeline-ui>
 
 ## 개발환경
 
