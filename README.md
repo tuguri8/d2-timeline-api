@@ -31,6 +31,10 @@ bin/kafka-server-start.sh config/server.properties
 cassandra
 ```
 
+## Posting Architecture
+
+![POSTING_ARCHITECTURE](https://i.imgur.com/AjF1IOa.png)
+
 ## Used Open Source
 
 - [Spring Boot](https://github.com/spring-projects/spring-boot)
